@@ -1,7 +1,7 @@
 package arrayhashmap
 
 func main() {
-	
+	hasDuplicate([]int{1,2,3,4,5})
 }
 
 // Contains Duplicate

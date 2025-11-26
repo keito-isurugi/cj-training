@@ -1,0 +1,5 @@
+package arrayhashmap
+
+func main() {
+	
+}

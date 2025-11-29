@@ -1,5 +1,11 @@
 package arrayhashmap
 
+import (
+	"sort"
+	"strconv"
+	"strings"
+)
+
 func main() {
 	hasDuplicate([]int{1,2,3,4,5})
 }
@@ -111,5 +117,91 @@ func groupAnagrams(strs []string) [][]string {
 
 // Top K Frequent Elements
 func topKFrequent(nums []int, k int) []int {
+	// 空のmapを作成 value => count
+	counts := make(map[int]int)
+	// それぞれの数値が何個あるかをカウント
+	for _, n := range nums {
+		counts[n]++
+	}
+	
+	// int型の空のスライス作成、capはnumsの種類数
+	keys := make([]int, 0, len(counts))
+	// numsの種類数分ループ、numsを空のスライスに追加(numsの重複が排除されたスライスが作れる)
+	for key := range counts {
+		keys = append(keys, key)
+	}
+	
+	// countsを降順でソート
+	sort.Slice(keys, func(i, j int) bool {
+		return counts[keys[i]] > counts[keys[j]]
+	})
+	
+	// 降順ソートされたスライスからtarget分までの数値を返す
+	return keys[:k]
+}
+
+// Encode and Decode Strings
+// 複数の文字列のリストを 1つの文字列にまとめて（encode）、またそこから元の文字列リストに戻す（decode）
+
+type Solution struct{}
+
+func (s *Solution) Encode(strs []string) string {
+	// 文字列結合のための専用バッファ構造体(文字列はイミュータブルだからいちいちコピーしているとメモリを食う)
+	var builder strings.Builder // 文字列バッファを作成
+	
+	// 文字列分ループ
+	for _, str := range strs {
+		// 連結したときに「長さ#文字列」という形にする => 1#i4#love3#you
+		// 最初に「長さ」を書き込み
+		builder.WriteString(strconv.Itoa(len(str)))
+		// 次に区切り文字の「#」を書き込み
+		builder.WriteString("#")
+		// 最後に「文字列」を書き込み
+		builder.WriteString(str)
+	}
+	
+	// 文字列を結合して返す。
+	return builder.String()
+}
+
+// 「1#i4#love3#you」みたいな「長さ#文字列」形式の文字列が与えられる
+func (s *Solution) Decode(st string) []string {
+	// 戻り値に使用する空のスライス
+	var result []string
+	
+	// ループ用のindex
+	i := 0
+	
+	// 文字列の長さ分ループ
+	for i < len(st) {
+		// '#'までを長さとして読む
+		j := i
+		
+		// 4#, 11# の '4', '11'の文字数分ループ
+		for st[j] != '#' {
+			j++
+		}
+		
+		// 文字列の中から長さを取得し数値に変換
+		length, _ := strconv.Atoi(st[i:j])
+		
+		// '#'をスキップするためにインクリメント
+		j++ 
+		
+		// 文字列部分を取得して変数に代入
+		word := st[j : j+length]
+		
+		// 戻り値に使用するスライスに文字列を追加
+		result = append(result, word)
+		
+		// 次の長さを取得できるようにindexを調整
+		i = j + length
+	}
+	
+	return result
+}
+
+// Products of Array Except Self
+func productExceptSelf(nums []int) []int {
 	return nil
 }

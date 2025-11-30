@@ -202,6 +202,44 @@ func (s *Solution) Decode(st string) []string {
 }
 
 // Products of Array Except Self
+// Input: nums = [1,2,4,6]
+// Output: [48,24,12,8]
 func productExceptSelf(nums []int) []int {
-	return nil
+	// numsの要素数
+	length := len(nums)
+	// 戻り値用のスライス
+	result := make([]int, length)
+	
+	// 左からの積を格納(自分の左側の積を格納していく)
+	// 例: index 2（値4）のときは、その左側 1*2 = 2 を result[2] に入れる
+	// 後から右側だけの積と掛けて、自分以外の数字との積を求める
+	result[0] = 1
+	for i := 1; i < length; i++ {
+		result[i] = result[i - 1] * nums[i - 1]
+		// ループ前 result [1, 0, 0, 0]
+		// i=1, 1*1 = result [1, 1, 0, 0]
+		// i=2, 1*2 = result [1, 1, 2, 0]
+		// i=3, 2*4 = result [1, 1, 2, 8]
+	}
+	
+	// 右からの積をかける
+	right := 1
+	for i := length - 1; i >= 0; i-- {
+		result[i] *= right
+		right *= nums[i]
+		// ループ前 result [1, 1, 2, 8], right = 1
+		// i=3, 8*1 = result [1, 1, 2, 8], right = 6 (1*6)
+		// i=2, 2*6 = result [1, 1, 12, 8], right = 24 (6*4)
+		// i=1, 1*24 = result [1, 24, 12, 8], right = 48 (24*2)
+		// i=0, 1*48 = result [48, 24, 12, 8], right = 48 (48*1)
+	}
+	
+	return result
+}
+
+// Longest Consecutive Sequence
+// Input: nums = [2,20,4,10,3,4,5]
+// Output: 4
+func longestConsecutive(nums []int) int {
+	return 0
 }

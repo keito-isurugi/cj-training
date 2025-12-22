@@ -1,0 +1,30 @@
+下記のAPIで 
+/coding/leetcode/blind75_problems.json
+の
+"category": "Intervals", 
+"category": "Math & Geometry", 
+"category": "Bit Manipulation", 
+の問題詳細を取得して解説ドキュメントを作成してください。
+解説に使用するコードAPIで取得できるはgoのコードで計算量が最適なものを使用してください。
+記事のフォーマットなどは既存のドキュメントを参考にしてください。
+ドキュメントはそれぞれ
+/16_intervals 
+/17_math-geometry
+/19_bit-manipulation
+配下に保存してください
+ファイル名は`<数値>_<問題名(小文字ケバブケース)>`です。
+<数値>は保存先ディレクトリのファイルのプレフィックスの連番にしてください(最小は1)
+
+# 問題詳細情報を取得するAPI
+dataにはjsonのproblemIdを入れてください
+post https://us-central1-neetcode-dd170.cloudfunctions.net/getProblemMetadataFunctionV2
+requestbody
+    data: {problemId: "duplicate-integer"}
+
+# 問題詳細情報APIで取得できる情報
+{
+    "result": {
+        "description": "", // 問題文
+        "article_body": "", //　解説
+    }
+}
